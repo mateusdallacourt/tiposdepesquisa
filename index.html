@@ -12,11 +12,15 @@
         #tela-inicial p { color: #7f8c8d; font-size: 18px; margin-bottom: 30px; }
         .input-nome { width: 80%; padding: 15px; font-size: 18px; border: 2px solid #bdc3c7; border-radius: 8px; margin-bottom: 20px; text-align: center; }
         .input-nome:focus { border-color: #3498db; outline: none; }
-        .btn-comecar { background-color: #3498db; color: white; border: none; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+        
+        .btn-comecar { background-color: #3498db; color: white; border: none; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; max-width: 300px; margin-bottom: 10px;}
         .btn-comecar:hover { background-color: #2980b9; }
         
-        #quiz-tela { display: none; text-align: left; }
-        #quiz-tela h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
+        .btn-ranking { background-color: #f39c12; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 100%; max-width: 300px; }
+        .btn-ranking:hover { background-color: #e67e22; }
+        
+        #quiz-tela, #ranking-tela { display: none; text-align: left; }
+        #quiz-tela h1, #ranking-tela h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
         #progresso-texto { text-align: center; color: #7f8c8d; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
         .barra-progresso { width: 100%; background-color: #ecf0f1; border-radius: 10px; height: 10px; margin-bottom: 30px; overflow: hidden; }
         #progresso-preenchimento { height: 100%; background-color: #3498db; width: 0%; transition: width 0.3s; }
@@ -37,7 +41,7 @@
         .estatisticas { font-size: 18px; color: #555; margin-bottom: 20px; }
         
         .mensagem-sucesso { background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 20px; font-weight: bold; display: none; }
-        .mensagem-carregando { color: #f39c12; font-weight: bold; margin-top: 20px; }
+        .mensagem-carregando { color: #f39c12; font-weight: bold; margin-top: 20px; text-align: center; }
         .lista-erros { text-align: left; margin-top: 30px; background-color: #fdf1f0; padding: 20px; border-radius: 8px; border: 1px solid #f5c6cb; }
         .lista-erros h3 { color: #c0392b; margin-top: 0; }
         .erro-item { margin-bottom: 15px; border-bottom: 1px solid #f5c6cb; padding-bottom: 10px;}
@@ -55,6 +59,17 @@
         <input type="text" id="input-nome-aluno" class="input-nome" placeholder="Digite seu nome completo..." autocomplete="off">
         <br>
         <button class="btn-comecar" onclick="comecarTeste()">Começar Teste ➔</button>
+        <br>
+        <button class="btn-ranking" onclick="verRanking()">🏆 Ver Ranking da Turma</button>
+    </div>
+
+    <div id="ranking-tela">
+        <h1>🏆 Placar de Líderes</h1>
+        <p style="text-align: center; color: #7f8c8d;">Veja as maiores notas da turma!</p>
+        <div id="ranking-lista" class="mensagem-carregando">⏳ Carregando dados...</div>
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn-comecar" style="background-color: #7f8c8d;" onclick="voltarInicio()">⬅️ Voltar ao Início</button>
+        </div>
     </div>
 
     <div id="quiz-tela">
@@ -67,16 +82,20 @@
 
     <div id="resultado-container">
         <div id="conteudo-resultado"></div>
-        <div id="status-salvamento" class="mensagem-carregando">⏳ Salvando sua nota no sistema do professor... aguarde.</div>
-        <div id="sucesso-salvamento" class="mensagem-sucesso">✅ Nota salva com sucesso! Você já pode fechar esta página.</div>
+        <div id="status-salvamento" class="mensagem-carregando">⏳ Salvando sua nota no sistema... aguarde.</div>
+        <div id="sucesso-salvamento" class="mensagem-sucesso">✅ Nota salva com sucesso! 
+            <br><br><button class="btn-ranking" onclick="location.reload()">Ir para Início / Ranking</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // URL correta do Google Script
-    const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycby3IH2hMQsXVEcPM5WFm_qRkSyOw0pKJiK4G8Cj7qdo9TQmtRzgHfprtfEHZPahhrdqJQ/exec";
+    // ========================================================
+    // O NOVO URL DO GOOGLE SCRIPT ESTÁ AQUI
+    // ========================================================
+    const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbyWURSaXaJbWh96eBI5LhNpOLo5RkICgcT4LsEZmYL6Qp25TYHWQQ0uLTRJ7BApsMPhBg/exec";
 
-    // Banco com as 30 Questões Completas
+    // 1. BANCO DE QUESTÕES (30 Questões Completas)
     const bancoDeQuestoes = [
         { enunciado: "Identifique o tipo de pesquisa: Você entrevista os três primeiros usuários de um óculos de realidade virtual que ainda não foi lançado.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
         { enunciado: "Identifique o tipo de pesquisa: Um cientista quer provar que o excesso de sal na dieta causa o aumento da pressão arterial.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
@@ -116,6 +135,50 @@
     let acertos = 0;
     let listaDeErros = [];
 
+    // ====== FUNÇÕES DO RANKING ======
+    function verRanking() {
+        document.getElementById('tela-inicial').style.display = 'none';
+        document.getElementById('ranking-tela').style.display = 'block';
+        document.getElementById('ranking-lista').innerHTML = "⏳ Carregando dados da planilha...";
+
+        fetch(URL_DA_PLANILHA)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    document.getElementById('ranking-lista').innerHTML = "<p style='text-align:center;'>Nenhum aluno fez o teste ainda.</p>";
+                    return;
+                }
+
+                let html = "<table style='width:100%; border-collapse: collapse; margin-top:20px; text-align: left;'>";
+                html += "<tr style='background-color:#3498db; color:white;'><th style='padding:12px; border-radius: 8px 0 0 0;'>Posição</th><th>Nome</th><th style='border-radius: 0 8px 0 0;'>Nota</th></tr>";
+                
+                data.forEach((aluno, index) => {
+                    let medalha = (index + 1) + "º";
+                    if (index === 0) medalha = "🥇 1º";
+                    else if (index === 1) medalha = "🥈 2º";
+                    else if (index === 2) medalha = "🥉 3º";
+
+                    let corFundo = index % 2 === 0 ? '#f9f9f9' : '#fff';
+                    html += `<tr style='border-bottom: 1px solid #ddd; background-color: ${corFundo};'>
+                                <td style='padding:12px; font-weight: bold; color: #2c3e50;'>${medalha}</td>
+                                <td style='padding:12px; color: #333;'>${aluno.nome}</td>
+                                <td style='padding:12px; font-weight: bold; color: #27ae60;'>${Number(aluno.nota).toFixed(1)}</td>
+                             </tr>`;
+                });
+                html += "</table>";
+                document.getElementById('ranking-lista').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('ranking-lista').innerHTML = "<p style='color:red; text-align:center;'>⚠️ Erro ao carregar o ranking.</p>";
+            });
+    }
+
+    function voltarInicio() {
+        document.getElementById('ranking-tela').style.display = 'none';
+        document.getElementById('tela-inicial').style.display = 'block';
+    }
+
+    // ====== FUNÇÕES DO QUIZ ======
     function comecarTeste() {
         let inputBox = document.getElementById('input-nome-aluno');
         if (inputBox.value.trim() === "") { alert("⚠️ Por favor, digite seu nome antes de começar!"); return; }
@@ -206,9 +269,7 @@
 
         document.getElementById('conteudo-resultado').innerHTML = mensagemHtml;
 
-        // =======================================================
-        // O CONSERTO FOI FEITO AQUI ABAIXO (URLSearchParams + no-cors)
-        // =======================================================
+        // Salvamento na Planilha
         let dados = new URLSearchParams();
         dados.append("nome", nomeDoAluno);
         dados.append("nota", notaDeZeroADez);
