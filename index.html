@@ -5,196 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Dinâmico: Metodologia</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eef2f5;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        #progresso-texto {
-            text-align: center;
-            color: #7f8c8d;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .barra-progresso {
-            width: 100%;
-            background-color: #ecf0f1;
-            border-radius: 10px;
-            height: 10px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        #progresso-preenchimento {
-            height: 100%;
-            background-color: #3498db;
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .questao-caixa {
-            background-color: #f9fbfd;
-            border-left: 4px solid #3498db;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        .enunciado {
-            font-weight: bold;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        .opcao-label {
-            display: block;
-            background-color: #fff;
-            border: 1px solid #dcdcdc;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .opcao-label:hover {
-            background-color: #ecf0f1;
-            border-color: #bdc3c7;
-        }
-        input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-        .botoes-container {
-            display: flex;
-            justify-content: flex-end;
-        }
-        button {
-            background-color: #2980b9;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #2471a3;
-        }
-        #resultado-container {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        .nota-final-destaque {
-            font-size: 48px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 10px 0;
-        }
-        .estatisticas {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-        .lista-erros {
-            text-align: left;
-            margin-top: 30px;
-            background-color: #fdf1f0;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #f5c6cb;
-            display: none;
-        }
-        .lista-erros h3 { color: #c0392b; margin-top: 0; }
-        .erro-item { margin-bottom: 15px; border-bottom: 1px solid #f5c6cb; padding-bottom: 10px;}
-        .erro-pergunta { font-weight: bold; font-size: 14px;}
-        .erro-resposta { color: #27ae60; font-weight: bold; font-size: 14px; margin-top: 5px;}
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f5; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        
+        #tela-inicial h1 { color: #2c3e50; font-size: 32px; margin-bottom: 10px; }
+        #tela-inicial p { color: #7f8c8d; font-size: 18px; margin-bottom: 30px; }
+        .input-nome { width: 80%; padding: 15px; font-size: 18px; border: 2px solid #bdc3c7; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .input-nome:focus { border-color: #3498db; outline: none; }
+        .btn-comecar { background-color: #3498db; color: white; border: none; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+        
+        #quiz-tela { display: none; text-align: left; }
+        #quiz-tela h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
+        #progresso-texto { text-align: center; color: #7f8c8d; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
+        .barra-progresso { width: 100%; background-color: #ecf0f1; border-radius: 10px; height: 10px; margin-bottom: 30px; overflow: hidden; }
+        #progresso-preenchimento { height: 100%; background-color: #3498db; width: 0%; transition: width 0.3s; }
+        
+        .questao-caixa { background-color: #f9fbfd; border-left: 4px solid #3498db; padding: 20px; border-radius: 4px; margin-bottom: 20px; font-size: 16px; }
+        .enunciado { font-weight: bold; margin-bottom: 20px; line-height: 1.5; }
+        .opcao-label { display: block; background-color: #fff; border: 1px solid #dcdcdc; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; }
+        .opcao-label:hover { background-color: #ecf0f1; border-color: #bdc3c7; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .botoes-container { display: flex; justify-content: flex-end; }
+        .btn-proxima { background-color: #2980b9; color: #fff; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        
+        #resultado-container { display: none; text-align: center; padding: 20px; }
+        .nome-destaque { font-size: 22px; color: #7f8c8d; margin-bottom: 10px; }
+        .nota-final-destaque { font-size: 48px; font-weight: bold; color: #2c3e50; margin: 10px 0; }
+        .estatisticas { font-size: 18px; color: #555; margin-bottom: 20px; }
+        
+        .mensagem-sucesso { background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 20px; font-weight: bold; display: none; }
+        .mensagem-carregando { color: #f39c12; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    
+    <div id="tela-inicial">
+        <h1>🔬 Bem-vindo ao Teste!</h1>
+        <p>Disciplina: Metodologia Científica</p>
+        <input type="text" id="input-nome-aluno" class="input-nome" placeholder="Digite seu nome completo..." autocomplete="off">
+        <br>
+        <button class="btn-comecar" onclick="comecarTeste()">Começar Teste ➔</button>
+    </div>
+
     <div id="quiz-tela">
         <h1>🔬 Teste: Metodologia</h1>
-        
         <div id="progresso-texto">Questão 1 de X</div>
-        <div class="barra-progresso">
-            <div id="progresso-preenchimento"></div>
-        </div>
-
-        <div class="questao-caixa" id="questao-container">
-            </div>
-
-        <div class="botoes-container">
-            <button id="btn-proxima" onclick="avancarQuestao()">Próxima Questão ➔</button>
-        </div>
+        <div class="barra-progresso"><div id="progresso-preenchimento"></div></div>
+        <div class="questao-caixa" id="questao-container"></div>
+        <div class="botoes-container"><button id="btn-proxima" class="btn-proxima" onclick="avancarQuestao()">Próxima Questão ➔</button></div>
     </div>
 
     <div id="resultado-container">
-        </div>
+        <div id="conteudo-resultado"></div>
+        <div id="status-salvamento" class="mensagem-carregando">⏳ Enviando sua nota para o professor... aguarde.</div>
+        <div id="sucesso-salvamento" class="mensagem-sucesso">✅ Nota salva com sucesso no sistema! Pode fechar a página.</div>
+    </div>
 </div>
 
 <script>
-    // 1. O BANCO DE QUESTÕES (Agora com 30 perguntas)
+    // ========================================================
+    // ATENÇÃO: COLE AQUI O URL QUE VOCÊ COPIOU DO GOOGLE SCRIPT
+    // ========================================================
+    const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbw8Gmuc2_VsdOKDRNoUEOJExG91HT1HOjEFxZBMoHYU6tdhT81CJl0VAgBKZSrGjPP0CA/exec";
+
+    // 1. BANCO DE QUESTÕES (Mantenha as 30 perguntas aqui)
     const bancoDeQuestoes = [
-        // --- AS 23 QUESTÕES ORIGINAIS ---
         { enunciado: "Identifique o tipo de pesquisa: Você entrevista os três primeiros usuários de um óculos de realidade virtual que ainda não foi lançado.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
         { enunciado: "Identifique o tipo de pesquisa: Um cientista quer provar que o excesso de sal na dieta causa o aumento da pressão arterial.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
-        { enunciado: "Identifique o tipo de pesquisa: A escola faz uma lista com a idade, o sexo e a cidade de origem de todos os alunos novos.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Descritiva" },
-        { enunciado: "Identifique o tipo de pesquisa: Um grupo de amigos prova uma fruta exótica da Amazônia que ninguém na cidade conhece para descrever o gosto.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
-        { enunciado: "Identifique o tipo de pesquisa: Uma pesquisa registra o preço da gasolina em 10 postos diferentes para comparar os valores.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Descritiva" },
-        { enunciado: "Identifique o tipo de pesquisa: Um estudo laboratorial analisa por que o metal X derrete mais rápido que o metal Y sob a mesma temperatura.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
-        { enunciado: "Identifique o tipo de pesquisa: Um pesquisador vai a uma tribo isolada apenas para observar como eles se organizam, sem ter estudos prévios.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
-        { enunciado: "Identifique o tipo de pesquisa: O IBGE conta quantas casas possuem acesso à internet em um bairro.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Descritiva" },
-        { enunciado: "Identifique o tipo de pesquisa: Um teste quer descobrir se o uso de telas antes de dormir é a causa direta da insônia em jovens.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
-        
-        { enunciado: "Identifique a abordagem: Um questionário onde o aluno marca de 1 a 5 o quanto gosta da merenda escolar.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Identifique a abordagem: Uma entrevista gravada onde o aluno explica com suas palavras por que se sente triste na escola.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Qualitativa" },
-        { enunciado: "Identifique a abordagem: Um gráfico que mostra a evolução do número de casos de dengue no Brasil em 10 anos.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Identifique a abordagem: O pesquisador anota a porcentagem de aprovação de um político e depois faz entrevistas para entender os motivos.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quali-quantitativa" },
-        { enunciado: "Identifique a abordagem: Um formulário com perguntas apenas de 'Sim' ou 'Não' enviado para 2.000 pessoas.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Identifique a abordagem: Um diário de campo onde um sociólogo escreve sobre o comportamento e as tradições de um grupo cultural.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Qualitativa" },
-        { enunciado: "Identifique a abordagem: Medição da temperatura da água em diferentes horários do dia para gerar uma tabela.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Identifique a abordagem: Análise de 100 cartas de amor antigas para entender como as pessoas expressavam sentimentos no passado.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Qualitativa" },
-        { enunciado: "Identifique a abordagem: Contagem de quantos carros pretos passam no sinal verde em 1 hora.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Um aluno quer documentar 'quantos colegas da sua sala têm gatos de estimação', sem se aprofundar nos sentimentos deles. Qual será o objetivo e a abordagem dessa pesquisa?", opcoes: ["Descritiva e Qualitativa", "Exploratória e Qualitativa", "Explicativa e Quantitativa", "Descritiva e Quantitativa"], respostaCorreta: "Descritiva e Quantitativa" },
-        { enunciado: "Testar em um laboratório fechado se o aumento de 5 graus na temperatura da água faz uma semente de feijão germinar em menos dias é um exemplo clássico de pesquisa:", opcoes: ["Explicativa (busca relação de causa e efeito)", "Descritiva (apenas documenta o formato)", "Exploratória (o feijão é tema desconhecido)", "Qualitativa (avalia os sentimentos sobre o feijão)"], respostaCorreta: "Explicativa (busca relação de causa e efeito)" },
-        { enunciado: "Qual é a principal diferença entre o objetivo da pesquisa exploratória e da pesquisa descritiva?", opcoes: ["A exploratória busca causas e efeitos; a descritiva foca em métricas.", "A exploratória aborda temas novos para gerar familiaridade; a descritiva mapeia características de fenômenos já conhecidos.", "A exploratória usa formulários fechados; a descritiva usa entrevistas abertas.", "Não há diferença, ambas servem para testar hipóteses."], respostaCorreta: "A exploratória aborda temas novos para gerar familiaridade; a descritiva mapeia características de fenômenos já conhecidos." },
-        { enunciado: "[ESTUDO DE CASO] Foi lançada uma IA nova que lê pensamentos, sem nenhum estudo publicado sobre. A aluna Júlia decide chamar os três primeiros alunos que compraram para uma conversa informal, só para entender como funciona. Qual é o tipo de pesquisa?", opcoes: ["Pesquisa Exploratória", "Pesquisa Descritiva", "Pesquisa Explicativa"], respostaCorreta: "Pesquisa Exploratória" },
-        { enunciado: "[ESTUDO DE CASO] Após conhecer a nova IA, Júlia envia um formulário com notas de 0 a 10 para 500 alunos. Depois, ela entrevista os insatisfeitos para ouvir suas queixas e entender seus sentimentos. Qual é a abordagem final da pesquisa?", opcoes: ["Abordagem Quantitativa", "Abordagem Qualitativa", "Abordagem Quali-quantitativa"], respostaCorreta: "Abordagem Quali-quantitativa" },
-
-        // --- AS 7 NOVAS QUESTÕES ---
-        { enunciado: "Identifique o tipo de pesquisa: Avaliar a relação direta comprovando que o aumento do tempo de tela em celulares causa miopia severa em crianças menores de 10 anos.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
-        { enunciado: "Identifique o tipo de pesquisa: Levantar quais são os 5 gêneros literários mais lidos pelos adolescentes do 3º ano do Ensino Médio de uma escola.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Descritiva" },
-        { enunciado: "Identifique o tipo de pesquisa: Um pesquisador decide estudar o comportamento de uma tribo urbana recém-surgida num jogo online, sobre a qual não há nenhuma literatura prévia.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
-        { enunciado: "Identifique a abordagem: Uma pesquisa eleitoral que publica num jornal que o candidato A tem 45% das intenções de voto e o candidato B tem 30%.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" },
-        { enunciado: "Identifique a abordagem: Um psicólogo analisa detalhadamente o discurso longo de três pacientes para entender os gatilhos emocionais de suas fobias sociais.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Qualitativa" },
-        { enunciado: "Identifique a abordagem: Uma startup envia um questionário com nota de 1 a 5 para avaliar seu novo aplicativo e, em seguida, faz entrevistas de 30 minutos com 10 usuários para aprofundar as opiniões.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quali-quantitativa" },
-        { enunciado: "Se um estudo foca em entender 'quantos' acidentes ocorrem num cruzamento (usando estatísticas) e 'por que' os motoristas se sentem confusos nele (usando rodas de conversa), ele é:", opcoes: ["Descritivo e Qualitativo", "Exploratório e Quantitativo", "Explicativo e Quali-quantitativo", "Descritivo e Quantitativo"], respostaCorreta: "Explicativo e Quali-quantitativo" }
+        { enunciado: "Identifique a abordagem: Um questionário onde o aluno marca de 1 a 5 o quanto gosta da merenda escolar.", opcoes: ["Quantitativa", "Qualitativa", "Quali-quantitativa"], respostaCorreta: "Quantitativa" }
     ];
 
-    // 2. VARIÁVEIS DE CONTROLE
+    let nomeDoAluno = "";
     let questoesEmbaralhadas = [];
     let indiceAtual = 0;
     let acertos = 0;
-    let listaDeErros = []; 
 
-    // 3. FUNÇÃO PARA EMBARALHAR (Algoritmo Fisher-Yates)
+    function comecarTeste() {
+        let inputBox = document.getElementById('input-nome-aluno');
+        if (inputBox.value.trim() === "") { alert("⚠️ Por favor, digite seu nome antes de começar!"); return; }
+        nomeDoAluno = inputBox.value.trim();
+        document.getElementById('tela-inicial').style.display = 'none';
+        document.getElementById('quiz-tela').style.display = 'block';
+        iniciarQuiz();
+    }
+
     function embaralharArray(array) {
         let arrayCopia = [...array];
         for (let i = arrayCopia.length - 1; i > 0; i--) {
@@ -204,132 +101,72 @@
         return arrayCopia;
     }
 
-    // 4. INICIAR O QUIZ
     function iniciarQuiz() {
         questoesEmbaralhadas = embaralharArray(bancoDeQuestoes);
         renderizarQuestao();
     }
 
-    // 5. MOSTRAR A QUESTÃO NA TELA
     function renderizarQuestao() {
         const questaoAtual = questoesEmbaralhadas[indiceAtual];
         const container = document.getElementById('questao-container');
-        const txtProgresso = document.getElementById('progresso-texto');
-        const barraProgresso = document.getElementById('progresso-preenchimento');
-
-        txtProgresso.innerText = `Questão ${indiceAtual + 1} de ${questoesEmbaralhadas.length}`;
-        barraProgresso.style.width = `${((indiceAtual) / questoesEmbaralhadas.length) * 100}%`;
+        document.getElementById('progresso-texto').innerText = `Questão ${indiceAtual + 1} de ${questoesEmbaralhadas.length}`;
+        document.getElementById('progresso-preenchimento').style.width = `${((indiceAtual) / questoesEmbaralhadas.length) * 100}%`;
 
         let htmlDiv = `<div class="enunciado">${questaoAtual.enunciado}</div>`;
-        
-        questaoAtual.opcoes.forEach((opcao, index) => {
-            htmlDiv += `
-                <label class="opcao-label">
-                    <input type="radio" name="resposta" value="${opcao}">
-                    ${opcao}
-                </label>
-            `;
-        });
-
+        questaoAtual.opcoes.forEach((opcao) => { htmlDiv += `<label class="opcao-label"><input type="radio" name="resposta" value="${opcao}"> ${opcao}</label>`; });
         container.innerHTML = htmlDiv;
 
         const btn = document.getElementById('btn-proxima');
         if (indiceAtual === questoesEmbaralhadas.length - 1) {
-            btn.innerText = "Finalizar Teste ✔️";
-            btn.style.backgroundColor = "#27ae60";
+            btn.innerText = "Finalizar Teste ✔️"; btn.style.backgroundColor = "#27ae60";
         }
     }
 
-    // 6. AVANÇAR PARA A PRÓXIMA
     function avancarQuestao() {
         const opcoes = document.getElementsByName('resposta');
         let respostaSelecionada = null;
+        for (let opcao of opcoes) { if (opcao.checked) { respostaSelecionada = opcao.value; break; } }
+        
+        if (!respostaSelecionada) { alert("Selecione uma alternativa!"); return; }
 
-        for (let opcao of opcoes) {
-            if (opcao.checked) {
-                respostaSelecionada = opcao.value;
-                break;
-            }
-        }
-
-        if (!respostaSelecionada) {
-            alert("Por favor, selecione uma alternativa antes de continuar!");
-            return;
-        }
-
-        const questaoAtual = questoesEmbaralhadas[indiceAtual];
-        if (respostaSelecionada === questaoAtual.respostaCorreta) {
-            acertos++;
-        } else {
-            listaDeErros.push({
-                pergunta: questaoAtual.enunciado,
-                respostaCerta: questaoAtual.respostaCorreta
-            });
-        }
+        if (respostaSelecionada === questoesEmbaralhadas[indiceAtual].respostaCorreta) { acertos++; }
 
         indiceAtual++;
-        if (indiceAtual < questoesEmbaralhadas.length) {
-            renderizarQuestao();
-        } else {
-            finalizarQuiz();
-        }
+        if (indiceAtual < questoesEmbaralhadas.length) { renderizarQuestao(); } 
+        else { finalizarQuiz(); }
     }
 
-    // 7. MOSTRAR RESULTADO FINAL (NOTA DE 0 A 10 E PORCENTAGEM)
     function finalizarQuiz() {
         document.getElementById('quiz-tela').style.display = 'none';
-        const resultContainer = document.getElementById('resultado-container');
-        resultContainer.style.display = 'block';
+        document.getElementById('resultado-container').style.display = 'block';
 
-        const totalQuestoes = questoesEmbaralhadas.length;
+        const notaDeZeroADez = ((acertos / questoesEmbaralhadas.length) * 10).toFixed(1); 
+        const porcentagem = Math.round((acertos / questoesEmbaralhadas.length) * 100);    
         
-        // Cálculos
-        const notaDeZeroADez = ((acertos / totalQuestoes) * 10).toFixed(1); // Ex: 8.5
-        const porcentagem = Math.round((acertos / totalQuestoes) * 100);    // Ex: 85%
-        
-        let mensagemHtml = `
+        document.getElementById('conteudo-resultado').innerHTML = `
             <h2>Teste Concluído!</h2>
+            <div class="nome-destaque">Aluno(a): <strong>${nomeDoAluno}</strong></div>
             <div class="nota-final-destaque">${notaDeZeroADez} / 10.0</div>
-            <div class="estatisticas">
-                Você acertou ${acertos} de ${totalQuestoes} questões (<strong>${porcentagem}%</strong>).
-            </div>
+            <div class="estatisticas">Acertos: ${acertos} de ${questoesEmbaralhadas.length} (${porcentagem}%)</div>
         `;
 
-        if (porcentagem >= 80) {
-            mensagemHtml += `<h3 style="color: #27ae60;">🏆 Excelente! Você dominou o assunto!</h3>`;
-        } else if (porcentagem >= 50) {
-            mensagemHtml += `<h3 style="color: #f39c12;">👍 Muito bom, mas vale revisar alguns detalhes.</h3>`;
-        } else {
-            mensagemHtml += `<h3 style="color: #c0392b;">📚 Atenção! É importante revisar o material da aula.</h3>`;
-        }
+        // Aqui é onde enviamos os dados para a Planilha do Google
+        let formData = new FormData();
+        formData.append("nome", nomeDoAluno);
+        formData.append("nota", notaDeZeroADez);
+        formData.append("porcentagem", porcentagem + "%");
 
-        // Exibe os erros
-        if (listaDeErros.length > 0) {
-            let errosHtml = `<div class="lista-erros" style="display: block;">
-                                <h3>O que você precisa revisar:</h3>`;
-            
-            listaDeErros.forEach(erro => {
-                errosHtml += `
-                    <div class="erro-item">
-                        <div class="erro-pergunta">${erro.pergunta}</div>
-                        <div class="erro-resposta">➔ Resposta correta: ${erro.respostaCerta}</div>
-                    </div>
-                `;
-            });
-            errosHtml += `</div>`;
-            mensagemHtml += errosHtml;
-        } else {
-             mensagemHtml += `<p style="color: #27ae60; font-weight: bold; margin-top:20px;">Você não errou nenhuma questão. Parabéns!</p>`;
-        }
-
-        mensagemHtml += `<button onclick="location.reload()" style="margin-top: 30px; background-color: #34495e;">Refazer Teste 🔄</button>`;
-
-        resultContainer.innerHTML = mensagemHtml;
+        fetch(URL_DA_PLANILHA, {
+            method: "POST",
+            body: formData
+        }).then(response => {
+            // Quando a planilha confirmar que salvou
+            document.getElementById('status-salvamento').style.display = 'none';
+            document.getElementById('sucesso-salvamento').style.display = 'block';
+        }).catch(error => {
+            document.getElementById('status-salvamento').innerText = "⚠️ Houve um pequeno erro de conexão, mas você concluiu o teste.";
+        });
     }
-
-    // Inicia o quiz automaticamente
-    window.onload = iniciarQuiz;
-
 </script>
 
 </body>
