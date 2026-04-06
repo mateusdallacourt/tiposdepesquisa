@@ -8,7 +8,6 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f5; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 700px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
         
-        /* TELA INICIAL */
         #tela-inicial h1 { color: #2c3e50; font-size: 32px; margin-bottom: 10px; }
         #tela-inicial p { color: #7f8c8d; font-size: 18px; margin-bottom: 30px; }
         .input-nome { width: 80%; padding: 15px; font-size: 18px; border: 2px solid #bdc3c7; border-radius: 8px; margin-bottom: 20px; text-align: center; }
@@ -16,7 +15,6 @@
         .btn-comecar { background-color: #3498db; color: white; border: none; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
         .btn-comecar:hover { background-color: #2980b9; }
         
-        /* QUIZ */
         #quiz-tela { display: none; text-align: left; }
         #quiz-tela h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
         #progresso-texto { text-align: center; color: #7f8c8d; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
@@ -33,13 +31,11 @@
         .btn-proxima { background-color: #2980b9; color: #fff; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s;}
         .btn-proxima:hover { background-color: #2471a3; }
         
-        /* RESULTADO */
         #resultado-container { display: none; text-align: center; padding: 20px; }
         .nome-destaque { font-size: 22px; color: #7f8c8d; margin-bottom: 10px; }
         .nota-final-destaque { font-size: 48px; font-weight: bold; color: #2c3e50; margin: 10px 0; }
         .estatisticas { font-size: 18px; color: #555; margin-bottom: 20px; }
         
-        /* AVISOS E ERROS */
         .mensagem-sucesso { background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-top: 20px; font-weight: bold; display: none; }
         .mensagem-carregando { color: #f39c12; font-weight: bold; margin-top: 20px; }
         .lista-erros { text-align: left; margin-top: 30px; background-color: #fdf1f0; padding: 20px; border-radius: 8px; border: 1px solid #f5c6cb; }
@@ -77,12 +73,10 @@
 </div>
 
 <script>
-    // ========================================================
-    // O SEU LINK DO GOOGLE SCRIPT ESTÁ AQUI:
-    // ========================================================
+    // URL correta do Google Script
     const URL_DA_PLANILHA = "https://script.google.com/macros/s/AKfycbw8Gmuc2_VsdOKDRNoUEOJExG91HT1HOjEFxZBMoHYU6tdhT81CJl0VAgBKZSrGjPP0CA/exec";
 
-    // 1. BANCO DE QUESTÕES (As 30 perguntas completas)
+    // Banco com as 30 Questões Completas
     const bancoDeQuestoes = [
         { enunciado: "Identifique o tipo de pesquisa: Você entrevista os três primeiros usuários de um óculos de realidade virtual que ainda não foi lançado.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Exploratória" },
         { enunciado: "Identifique o tipo de pesquisa: Um cientista quer provar que o excesso de sal na dieta causa o aumento da pressão arterial.", opcoes: ["Exploratória", "Descritiva", "Explicativa"], respostaCorreta: "Explicativa" },
@@ -122,7 +116,6 @@
     let acertos = 0;
     let listaDeErros = [];
 
-    // Função para iniciar e validar o nome
     function comecarTeste() {
         let inputBox = document.getElementById('input-nome-aluno');
         if (inputBox.value.trim() === "") { alert("⚠️ Por favor, digite seu nome antes de começar!"); return; }
@@ -132,7 +125,6 @@
         iniciarQuiz();
     }
 
-    // Função para embaralhar a ordem
     function embaralharArray(array) {
         let arrayCopia = [...array];
         for (let i = arrayCopia.length - 1; i > 0; i--) {
@@ -147,7 +139,6 @@
         renderizarQuestao();
     }
 
-    // Renderiza a pergunta na tela
     function renderizarQuestao() {
         const questaoAtual = questoesEmbaralhadas[indiceAtual];
         const container = document.getElementById('questao-container');
@@ -166,7 +157,6 @@
         }
     }
 
-    // Valida a resposta e avança
     function avancarQuestao() {
         const opcoes = document.getElementsByName('resposta');
         let respostaSelecionada = null;
@@ -188,7 +178,6 @@
         else { finalizarQuiz(); }
     }
 
-    // Calcula nota, envia pro Google Sheets e mostra os erros
     function finalizarQuiz() {
         document.getElementById('quiz-tela').style.display = 'none';
         document.getElementById('resultado-container').style.display = 'block';
@@ -217,8 +206,9 @@
 
         document.getElementById('conteudo-resultado').innerHTML = mensagemHtml;
 
-        // Envia silenciosamente para a Planilha do Google
-       // Envia silenciosamente para a Planilha do Google no formato exato que o Google exige
+        // =======================================================
+        // O CONSERTO FOI FEITO AQUI ABAIXO (URLSearchParams + no-cors)
+        // =======================================================
         let dados = new URLSearchParams();
         dados.append("nome", nomeDoAluno);
         dados.append("nota", notaDeZeroADez);
@@ -232,7 +222,7 @@
             document.getElementById('status-salvamento').style.display = 'none';
             document.getElementById('sucesso-salvamento').style.display = 'block';
         }).catch(error => {
-            document.getElementById('status-salvamento').innerText = "⚠️ Houve um pequeno erro de conexão, mas você concluiu o teste.";
+            document.getElementById('status-salvamento').innerText = "⚠️ Houve um erro de conexão, mas sua nota foi processada localmente.";
         });
     }
 </script>
