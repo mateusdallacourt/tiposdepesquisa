@@ -218,16 +218,17 @@
         document.getElementById('conteudo-resultado').innerHTML = mensagemHtml;
 
         // Envia silenciosamente para a Planilha do Google
-        let formData = new FormData();
-        formData.append("nome", nomeDoAluno);
-        formData.append("nota", notaDeZeroADez);
-        formData.append("porcentagem", porcentagem + "%");
+       // Envia silenciosamente para a Planilha do Google no formato exato que o Google exige
+        let dados = new URLSearchParams();
+        dados.append("nome", nomeDoAluno);
+        dados.append("nota", notaDeZeroADez);
+        dados.append("porcentagem", porcentagem + "%");
 
         fetch(URL_DA_PLANILHA, {
             method: "POST",
-            body: formData,
-            mode: "no-cors" // Evita erros de segurança no navegador ao falar com o Google
-        }).then(response => {
+            body: dados,
+            mode: "no-cors"
+        }).then(() => {
             document.getElementById('status-salvamento').style.display = 'none';
             document.getElementById('sucesso-salvamento').style.display = 'block';
         }).catch(error => {
